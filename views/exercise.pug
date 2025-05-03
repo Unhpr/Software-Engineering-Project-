@@ -1,0 +1,19 @@
+extends layout
+
+block content
+  .exercise-card.mx-auto
+    h2.text-center.mb-4 Exercise Plan
+
+    form#exerciseForm(class="mb-3")
+      .mb-3
+        label.form-label(for="exerciseInput") Exercise Name
+        input.form-control(type="text", id="exerciseInput", placeholder="e.g. Push-ups")
+      button.btn.btn-success(type="submit") Add Exercise
+
+    h4.mt-4 Active Exercises:
+    ul.list-group#activeList
+
+    h4.mt-4 Completed Exercises:
+    ul.list-group#completedList
+
+  script(src="/scripts/exercise.js")

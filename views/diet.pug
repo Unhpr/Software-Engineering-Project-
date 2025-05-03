@@ -1,0 +1,22 @@
+extends layout
+
+block content
+  .diet-card.mx-auto
+    h2.text-center.mb-4 Diet Plan
+
+    form#dietForm(class="mb-3")
+      .mb-3
+        label.form-label(for="foodInput") Food Name
+        input.form-control(type="text", id="foodInput", placeholder="e.g. Banana")
+      .mb-3
+        label.form-label(for="caloriesInput") Calories
+        input.form-control(type="number", id="caloriesInput", placeholder="e.g. 100")
+      button.btn.btn-success(type="submit") Add Food
+
+    h4.mt-4 Your Diet List:
+    ul.list-group#dietList
+
+    h4.mt-4 Total Calories: 
+    span#totalCalories 0
+
+  script(src="/scripts/diet.js")

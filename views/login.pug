@@ -1,0 +1,30 @@
+extends layout
+
+block content
+  .login-card.mx-auto
+    h2.text-center.mb-4 Login to Health Tracker
+
+    form#loginForm(class="mb-3")
+      .mb-3
+        label.form-label(for="email") Email address
+        input.form-control(type="email", id="email", placeholder="Enter email")
+      .mb-3
+        label.form-label(for="password") Password
+        input.form-control(type="password", id="password", placeholder="Enter password")
+      button.btn.btn-dark.w-100(type="submit") Sign in
+
+    p.text-center.mt-3.text-muted Don't have an account? 
+      a(href="/signup") Sign up
+
+    hr
+
+    .text-center.mb-2.text-muted Sign in with
+    .d-flex.justify-content-center.gap-3.mb-3
+      a.btn.btn-outline-dark(href="#")
+        i(class="bi bi-google me-1")
+        | Google
+      a.btn.btn-outline-dark(href="#")
+        i(class="bi bi-facebook me-1")
+        | Facebook
+
+  script(src="/scripts/login.js")

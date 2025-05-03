@@ -1,0 +1,24 @@
+extends layout
+
+block content
+  .group-card.mx-auto
+    h2.text-center.mb-4 Group Management
+
+    h4 Create Group
+    form#createForm(class="mb-3")
+      .mb-3
+        label.form-label(for="groupName") Group Name
+        input.form-control(type="text", id="groupName", placeholder="e.g. FitnessClub")
+      button.btn.btn-primary(type="submit") Create
+
+    h4.mt-4 Join Group
+    form#joinForm(class="mb-3")
+      .mb-3
+        label.form-label(for="inviteCode") Invite Code
+        input.form-control(type="text", id="inviteCode", placeholder="Enter code")
+      button.btn.btn-info(type="submit") Join
+
+    h4.mt-4 Group Members:
+    ul.list-group#memberList
+
+  script(src="/scripts/group.js")
