@@ -1,0 +1,30 @@
+extends layout
+
+block content
+  .login-card.mx-auto
+    h2.text-center.mb-4 Create your account
+
+    form#signupForm(class="mb-3")
+      .mb-3
+        label.form-label(for="username") Username
+        input.form-control(type="text", id="username", placeholder="Enter username")
+      .mb-3
+        label.form-label(for="email") Email
+        input.form-control(type="email", id="email", placeholder="Enter email")
+      .mb-3
+        label.form-label(for="password") Password
+        input.form-control(type="password", id="password", placeholder="Create password")
+      .mb-3
+        label.form-label(for="confirm") Confirm Password
+        input.form-control(type="password", id="confirm", placeholder="Confirm password")
+      .mb-3
+        div.form-check
+          input.form-check-input(type="checkbox", id="terms")
+          label.form-check-label(for="terms") I agree to the terms
+      button.btn.btn-dark.w-100(type="submit") Sign Up
+
+    p.text-center.mt-3
+      | Already have an account?
+      a(href="/login") Login
+
+  script(src="/scripts/signup.js")

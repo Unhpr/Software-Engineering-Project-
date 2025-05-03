@@ -1,0 +1,35 @@
+body {
+  background-image: url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1920&q=80');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  font-family: 'Segoe UI', sans-serif;
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+}
+
+.page-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 90vh;
+  padding-top: 60px;
+}
+
+
+.login-card,
+.signup-card,
+.group-card,
+.exercise-card,
+.diet-card,
+.home-card {
+  background-color: rgba(255, 255, 255, 0.85);
+  max-width: 600px;
+  width: 100%;
+  padding: 3rem;
+  border-radius: 12px;
+  box-shadow: 0 0 30px rgba(0, 0, 0, 0.15);
+  margin: auto;
+  margin-top: 3rem;
+}
