@@ -20,7 +20,7 @@ const groupRouter = require('./routes/group');
 const goalApi = require('./routes/api-goal');
 const groupApi = require('./routes/api-group');
 const apiFoodRouter = require('./routes/api-food');
-const apiExerciseRouter = require('./routes/api-exercise'); 
+const apiExerciseRouter = require('./routes/api-exercise');
 
 app.use('/', indexRouter);
 app.use('/diet', dietRouter);
@@ -31,7 +31,7 @@ app.use('/group', groupRouter);
 app.use('/api/goal', goalApi);
 app.use('/api/group', groupApi);
 app.use('/api/food', apiFoodRouter);
-app.use('/api/exercise', apiExerciseRouter); 
+app.use('/api/exercise', apiExerciseRouter);
 
 app.listen(3000, () => {
   console.log('Server is running at http://localhost:3000');
