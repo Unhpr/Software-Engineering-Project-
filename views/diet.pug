@@ -19,4 +19,15 @@ block content
     h4.mt-4 Total Calories: 
     span#totalCalories 0
 
+    hr
+    h4.mt-5 Add Food to Database
+    form#customFoodForm
+      .mb-3
+        label.form-label(for="foodName") Food Name
+        input.form-control(type="text", id="foodName", placeholder="e.g. Apple")
+      .mb-3
+        label.form-label(for="calories") Calories
+        input.form-control(type="number", id="calories", placeholder="e.g. 95")
+      button.btn.btn-primary(type="submit") Save to Database
+
   script(src="/scripts/diet.js")

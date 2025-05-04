@@ -18,7 +18,22 @@ block content
         input.form-control(type="text", id="inviteCode", placeholder="Enter code")
       button.btn.btn-info(type="submit") Join
 
-    h4.mt-4 Group Members:
+    h4.mt-4 Goal Tracker
+    form#goalForm(class="mb-3")
+      .mb-3
+        label.form-label(for="email") Email
+        input.form-control(type="email", id="email", placeholder="Enter your email")
+      .mb-3
+        label.form-label(for="goal") Goal
+        input.form-control(type="text", id="goal", placeholder="Enter your goal")
+      button.btn.btn-dark.w-100(type="submit") Submit Goal
+
+    hr
+    h5.text-center.text-muted Group Members:
     ul.list-group#memberList
+
+    hr
+    h5.text-center.text-muted Submitted Goals:
+    ul.list-group#goalList
 
   script(src="/scripts/group.js")
