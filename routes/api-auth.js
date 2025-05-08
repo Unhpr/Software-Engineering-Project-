@@ -44,12 +44,6 @@ router.post('/register', async (req, res) => {
 
 // Login Route
 router.post('/login', async (req, res) => {
-  console.log("Login attempt received:", req.body);
-  console.log("Storing session:", {
-  username: user.username,
-  email: user.email
-});
-
   const { email, password } = req.body;
 
   try {
@@ -59,15 +53,20 @@ router.post('/login', async (req, res) => {
       return res.status(401).send('Invalid credentials');
     }
 
-    // Store username and email in session
     req.session.username = user.username;
     req.session.email = user.email;
+    
+    console.log("✅ Storing session:", {
+      username: user.username,
+      email: user.email
+    });
 
     res.redirect('/dashboard');
   } catch (err) {
     res.status(500).send('Login error');
   }
 });
+
 
 
 module.exports = router;
