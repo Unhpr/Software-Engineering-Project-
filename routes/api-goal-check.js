@@ -20,7 +20,7 @@ router.get('/status', async (req, res) => {
         goalType: goal.goalType,
         target: goal.target,
         met,
-        message: met ? "🎉 Goal achieved!" : "Goal in progress."
+        message: met ? "Goal achieved!" : "Goal in progress."
       };
     });
 

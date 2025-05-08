@@ -4,7 +4,7 @@ const UserProfile = require('../models/UserProfile');
 
 // Register Route
 router.post('/register', async (req, res) => {
-  console.log("📝 Received register request body:", req.body);
+  console.log("Received register request body:", req.body);
 
   const { username, name, email, height, weight, targetWeight, password } = req.body;
 
@@ -44,7 +44,11 @@ router.post('/register', async (req, res) => {
 
 // Login Route
 router.post('/login', async (req, res) => {
-  console.log("🔐 Login attempt received:", req.body);
+  console.log("Login attempt received:", req.body);
+  console.log("Storing session:", {
+  username: user.username,
+  email: user.email
+});
 
   const { email, password } = req.body;
 
