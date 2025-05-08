@@ -32,6 +32,12 @@ app.use('/api/goal', goalApi);
 app.use('/api/group', groupApi);
 app.use('/api/food', apiFoodRouter);
 app.use('/api/exercise', apiExerciseRouter);
+app.use('/api/auth', require('./routes/api-auth'));
+app.get('/signup', (req, res) => {
+  res.render('register');  
+});
+
+
 
 app.listen(3000, () => {
   console.log('Server is running at http://localhost:3000');
