@@ -1,12 +1,12 @@
 const express = require('express');
 const router = express.Router();
 
-const UserProfile = require('../models/UserProfile'); // move this outside try
+const UserProfile = require('../models/UserProfile'); 
 
 router.post('/register', async (req, res) => {
-  console.log("📝 Received register request body:", req.body); // debug log
+  console.log("📝 Received register request body:", req.body); 
 
-  const { username, name, email, height, weight, targetWeight } = req.body;
+  const { username, name, email, height, weight, targetWeight, password } = req.body;
 
   if (!username || !email || !height || !weight) {
     return res.status(400).json({ message: 'Missing required fields' });
@@ -21,9 +21,12 @@ router.post('/register', async (req, res) => {
       email,
       height,
       weight,
+      password,
       bmi: parseFloat(bmi.toFixed(2)),
       targetWeight: targetWeight || null
     });
+    
+    
 
     await newUser.save();
 
