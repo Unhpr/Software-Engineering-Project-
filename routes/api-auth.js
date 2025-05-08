@@ -1,14 +1,14 @@
 const express = require('express');
 const router = express.Router();
+const UserProfile = require('../models/UserProfile');
 
-const UserProfile = require('../models/UserProfile'); 
-
+// ✅ Register Route
 router.post('/register', async (req, res) => {
-  console.log("📝 Received register request body:", req.body); 
+  console.log("📝 Received register request body:", req.body);
 
   const { username, name, email, height, weight, targetWeight, password } = req.body;
 
-  if (!username || !email || !height || !weight) {
+  if (!username || !email || !height || !weight || !password) {
     return res.status(400).json({ message: 'Missing required fields' });
   }
 
@@ -25,35 +25,6 @@ router.post('/register', async (req, res) => {
       bmi: parseFloat(bmi.toFixed(2)),
       targetWeight: targetWeight || null
     });
-  // POST /login – handles user login
-router.post('/login', async (req, res) => {
-  const { email, password } = req.body;
-
-  try {
-    const user = await UserProfile.findOne({ email });
-
-    if (!user) {
-      return res.status(400).json({ message: 'User not found' });
-    }
-
-    if (user.password !== password) {
-      return res.status(401).json({ message: 'Invalid credentials' });
-    }
-
-    // Login success
-    res.json({
-      message: 'Login successful',
-      user: {
-        username: user.username,
-        email: user.email
-      }
-    });
-  } catch (err) {
-    res.status(500).json({ message: 'Login error', error: err.message });
-  }
-});
-  
-    
 
     await newUser.save();
 
@@ -68,6 +39,33 @@ router.post('/login', async (req, res) => {
     });
   } catch (error) {
     res.status(500).json({ message: 'Error saving user', error: error.message });
+  }
+});
+
+// ✅ Login Route
+router.post('/login', async (req, res) => {
+  const { email, password } = req.body;
+
+  try {
+    const user = await UserProfile.findOne({ email });
+
+    if (!user) {
+      return res.status(400).json({ message: 'User not found' });
+    }
+
+    if (user.password !== password) {
+      return res.status(401).json({ message: 'Invalid credentials' });
+    }
+
+    res.json({
+      message: 'Login successful',
+      user: {
+        username: user.username,
+        email: user.email
+      }
+    });
+  } catch (err) {
+    res.status(500).json({ message: 'Login error', error: err.message });
   }
 });
 
