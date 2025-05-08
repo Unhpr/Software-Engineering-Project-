@@ -4,25 +4,30 @@ block content
   .container
     h2 Set a Fitness Goal
 
-    form(action="/api/goal/create" method="POST")
+    form(action="/api/goal/add" method="POST")
+      .mb-3
+        label(for="email") Email
+        input.form-control(type="email", name="email", placeholder="Enter your email", required)
+
       .mb-3
         label(for="goalType") Goal Type
-        select.form-control(name="goalType")
+        select.form-control(name="goalType" required)
           option(value="Weight Loss") Weight Loss
           option(value="Running") Running
           option(value="Cycling") Cycling
+          option(value="General Fitness") General Fitness
 
       .mb-3
         label(for="target") Target Description
-        input.form-control(type="text", name="target", placeholder="e.g. Lose 5kg")
+        input.form-control(type="text", name="target", placeholder="e.g. Lose 5kg or Run 5km")
 
       .mb-3
         label(for="distance") Distance (km)
-        input.form-control(type="number", name="distance", placeholder="e.g. 5")
+        input.form-control(type="number", name="distance", placeholder="Optional: e.g. 5")
 
       .mb-3
         label(for="time") Time (minutes)
-        input.form-control(type="number", name="time", placeholder="e.g. 30")
+        input.form-control(type="number", name="time", placeholder="Optional: e.g. 30")
 
       .mb-3
         label(for="deadline") Deadline
