@@ -4,7 +4,18 @@ connectDB();
 const express = require('express');
 const path = require('path');
 const app = express();
+const session = require('express-session');
 
+app.use(session({
+  secret: 'your-secret-key', // change this to something secure
+  resave: false,
+  saveUninitialized: true
+}));
+
+app.use((req, res, next) => {
+  res.locals.username = req.session.username || null;
+  next();
+});
 
 app.use(express.urlencoded({ extended: true }));
 
@@ -38,6 +49,19 @@ app.use('/api/exercise', apiExerciseRouter);
 app.use('/api/auth', require('./routes/api-auth'));
 app.get('/signup', (req, res) => {
   res.render('register');  
+});
+app.get('/dashboard', (req, res) => {
+  if (!req.session.username) {
+    return res.redirect('/login');
+  }
+
+  res.render('dashboard', { username: req.session.username });
+});
+
+app.get('/logout', (req, res) => {
+  req.session.destroy(() => {
+    res.redirect('/');
+  });
 });
 
 
