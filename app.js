@@ -7,7 +7,7 @@ const app = express();
 const session = require('express-session');
 
 app.use(session({
-  secret: 'your-secret-key', // change this to something secure
+  secret: 'your-secret-key', 
   resave: false,
   saveUninitialized: true
 }));
@@ -63,6 +63,7 @@ app.get('/logout', (req, res) => {
     res.redirect('/');
   });
 });
+
 
 
 

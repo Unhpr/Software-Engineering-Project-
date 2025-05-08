@@ -4,13 +4,13 @@ block content
   .login-card.mx-auto
     h2.text-center.mb-4 Login to Health Tracker
 
-    form#loginForm(class="mb-3")
+    form#loginForm(class="mb-3" method="POST" action="/api/auth/login")
       .mb-3
         label.form-label(for="email") Email address
-        input.form-control(type="email", id="email", placeholder="Enter email")
+        input.form-control(type="email", id="email", name="email", placeholder="Enter email", required)
       .mb-3
         label.form-label(for="password") Password
-        input.form-control(type="password", id="password", placeholder="Enter password")
+        input.form-control(type="password", id="password", name="password", placeholder="Enter password", required)
       button.btn.btn-dark.w-100(type="submit") Sign in
 
     p.text-center.mt-3.text-muted Don't have an account? 
@@ -26,5 +26,3 @@ block content
       a.btn.btn-outline-dark(href="#")
         i(class="bi bi-facebook me-1")
         | Facebook
-
-  script(src="/scripts/login.js")

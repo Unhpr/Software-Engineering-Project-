@@ -44,6 +44,8 @@ router.post('/register', async (req, res) => {
 
 // Login Route
 router.post('/login', async (req, res) => {
+  console.log("🔐 Login attempt received:", req.body);
+
   const { email, password } = req.body;
 
   try {
