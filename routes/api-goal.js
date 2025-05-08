@@ -4,11 +4,25 @@ const UserGoal = require('../models/UserGoal');
 
 
 router.post('/add', async (req, res) => {
-  const { email, goal } = req.body;
-  const newGoal = new UserGoal({ email, goal });
-  await newGoal.save();
-  res.send({ message: 'Goal saved' });
+  const { email, goalType, target, distance, time, deadline } = req.body;
+
+  try {
+    const newGoal = new UserGoal({
+      email,
+      goalType,
+      target,
+      distance: distance ? Number(distance) : null,
+      time: time ? Number(time) : null,
+      deadline: deadline ? new Date(deadline) : null
+    });
+
+    await newGoal.save();
+    res.redirect('/dashboard'); // or another success page
+  } catch (err) {
+    res.status(500).send("Failed to save goal: " + err.message);
+  }
 });
+
 
 
 router.get('/:email', async (req, res) => {

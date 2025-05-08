@@ -63,6 +63,10 @@ app.get('/logout', (req, res) => {
     res.redirect('/');
   });
 });
+app.get('/create-goal', (req, res) => {
+  if (!req.session.username) return res.redirect('/login');
+  res.render('create-goal');
+});
 
 
 
