@@ -1,36 +1,35 @@
 extends layout
 
 block content
-  .form-container
-    h2 Sign Up
+  .login-card.mx-auto
+    h2.text-center.mb-4 Sign Up for Health Tracker
 
-    form(action="/api/auth/register" method="POST" class="form-box")
-      label(for="username") Username:
-      input(type="text" name="username" required)
-      br
+    form#registerForm(class="mb-3" action="/api/auth/register" method="POST")
+      .mb-3
+        label.form-label(for="username") Username
+        input.form-control(type="text", name="username", id="username", required)
 
-      label(for="name") Full Name:
-      input(type="text" name="name" required)
-      br
+      .mb-3
+        label.form-label(for="name") Full Name
+        input.form-control(type="text", name="name", id="name", required)
 
-      label(for="email") Email:
-      input(type="email" name="email" required)
-      br
+      .mb-3
+        label.form-label(for="email") Email address
+        input.form-control(type="email", name="email", id="email", required)
 
-      label(for="height") Height (cm):
-      input(type="number" name="height" required)
-      br
+      .mb-3
+        label.form-label(for="height") Height (cm)
+        input.form-control(type="number", name="height", id="height", required)
 
-      label(for="weight") Weight (kg):
-      input(type="number" name="weight" required)
-      br
+      .mb-3
+        label.form-label(for="weight") Weight (kg)
+        input.form-control(type="number", name="weight", id="weight", required)
 
-      label(for="targetWeight") Target Weight (kg) [Optional]:
-      input(type="number" name="targetWeight")
-      br
+      .mb-3
+        label.form-label(for="targetWeight") Target Weight (kg) (Optional)
+        input.form-control(type="number", name="targetWeight", id="targetWeight")
 
-      button(type="submit") Register
+      button.btn.btn-dark.w-100(type="submit") Sign Up
 
-    p
-      | Already have an account?
+    p.text-center.mt-3.text-muted Already have an account? 
       a(href="/login") Log in
