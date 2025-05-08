@@ -55,14 +55,15 @@ router.post('/login', async (req, res) => {
       return res.status(401).send('Invalid credentials');
     }
 
-    // Save username in session
+    // Store username and email in session
     req.session.username = user.username;
+    req.session.email = user.email;
 
-    // Redirect to dashboard
     res.redirect('/dashboard');
   } catch (err) {
     res.status(500).send('Login error');
   }
 });
+
 
 module.exports = router;

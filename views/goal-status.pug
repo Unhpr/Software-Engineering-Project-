@@ -1,0 +1,17 @@
+
+extends layout
+
+block content
+  h2.text-center.mt-4 Goal Status
+
+  if goals.length
+    each goal in goals
+      .card.mb-3
+        .card-body
+          h5.card-title Goal: #{goal.type}
+          p Target: #{goal.value}
+          p= goal.message
+          if goal.met
+            a.btn.btn-primary(href="/create-goal") Set a New Goal
+  else
+    p.text-center.mt-5 No goals found.
