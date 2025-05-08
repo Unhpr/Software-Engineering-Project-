@@ -25,7 +25,34 @@ router.post('/register', async (req, res) => {
       bmi: parseFloat(bmi.toFixed(2)),
       targetWeight: targetWeight || null
     });
-    
+  // POST /login – handles user login
+router.post('/login', async (req, res) => {
+  const { email, password } = req.body;
+
+  try {
+    const user = await UserProfile.findOne({ email });
+
+    if (!user) {
+      return res.status(400).json({ message: 'User not found' });
+    }
+
+    if (user.password !== password) {
+      return res.status(401).json({ message: 'Invalid credentials' });
+    }
+
+    // Login success
+    res.json({
+      message: 'Login successful',
+      user: {
+        username: user.username,
+        email: user.email
+      }
+    });
+  } catch (err) {
+    res.status(500).json({ message: 'Login error', error: err.message });
+  }
+});
+  
     
 
     await newUser.save();
