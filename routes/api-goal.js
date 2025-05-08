@@ -3,6 +3,7 @@ const router = express.Router();
 const UserGoal = require('../models/UserGoal');
 
 
+// routes/api-goal.js
 router.post('/add', async (req, res) => {
   const { email, goalType, target, distance, time, deadline } = req.body;
 
@@ -11,17 +12,18 @@ router.post('/add', async (req, res) => {
       email,
       goalType,
       target,
-      distance: distance ? Number(distance) : null,
-      time: time ? Number(time) : null,
-      deadline: deadline ? new Date(deadline) : null
+      distance: distance ? Number(distance) : undefined,
+      time: time ? Number(time) : undefined,
+      deadline: deadline ? new Date(deadline) : undefined
     });
 
     await newGoal.save();
-    res.redirect('/dashboard'); // or another success page
+    res.redirect('/dashboard'); 
   } catch (err) {
     res.status(500).send("Failed to save goal: " + err.message);
   }
 });
+
 
 
 

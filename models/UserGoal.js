@@ -1,8 +1,13 @@
 // models/UserGoal.js
 const mongoose = require('mongoose');
-const userGoalSchema = new mongoose.Schema({
-  email: String,
-  goal: String,
-  createdAt: { type: Date, default: Date.now }
-});
-module.exports = mongoose.model('UserGoal', userGoalSchema);
+
+const UserGoalSchema = new mongoose.Schema({
+  email: { type: String, required: true },
+  goalType: { type: String, required: true },
+  target: { type: String },
+  distance: { type: Number },
+  time: { type: Number },
+  deadline: { type: Date }
+}, { timestamps: true });
+
+module.exports = mongoose.model('UserGoal', UserGoalSchema);

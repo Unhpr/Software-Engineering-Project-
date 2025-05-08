@@ -1,17 +1,22 @@
-
 extends layout
 
 block content
-  h2.text-center.mt-4 Goal Status
+  .container.mt-5
+    h2.text-center.mb-4 Goal Status
 
-  if goals.length
     each goal in goals
-      .card.mb-3
+      .card.mb-3.shadow-sm
         .card-body
-          h5.card-title Goal: #{goal.type}
-          p Target: #{goal.value}
-          p= goal.message
+          h5.card-title Goal: #{goal.goalType}
+          p.card-text
+            | Target: #{goal.target || 'N/A'}
+          if goal.distance
+            p.card-text Distance: #{goal.distance} km
+          if goal.time
+            p.card-text Time: #{goal.time} minutes
+          if goal.deadline
+            p.card-text Deadline: #{goal.deadline.toDateString()}
           if goal.met
-            a.btn.btn-primary(href="/create-goal") Set a New Goal
-  else
-    p.text-center.mt-5 No goals found.
+            p.text-success #{goal.message}
+          else
+            p.text-warning #{goal.message}

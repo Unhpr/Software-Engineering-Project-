@@ -3,28 +3,33 @@ const router = express.Router();
 const UserGoal = require('../models/UserGoal');
 const UserProfile = require('../models/UserProfile');
 
-// ✅ This version doesn't need :email — it uses session email
-router.get('/status', async (req, res) => {
-  const email = req.session.email;
-  if (!email) return res.redirect('/login');
-
+router.get('/status/:email', async (req, res) => {
   try {
+    const { email } = req.params;
     const goals = await UserGoal.find({ email });
     const user = await UserProfile.findOne({ email });
 
     if (!user) return res.status(404).send('User not found');
 
     const statusReport = goals.map(goal => {
-      if (goal.goal?.type === 'weight') {
-        const target = parseFloat(goal.goal.value);
-        const met = user.weight <= target;
-        return {
-          ...goal.goal,
-          met,
-          message: met ? '🎉 Goal achieved! Consider setting a new target.' : 'Goal in progress.'
-        };
+      let met = false;
+      let message = "Goal in progress.";
+
+      if (goal.goalType === 'Weight Loss' && goal.target) {
+        const targetWeight = parseFloat(goal.target);
+        met = user.weight <= targetWeight;
+        message = met ? "🎉 Goal achieved!" : "Keep working on your goal!";
       }
-      return { ...goal.goal, met: false, message: 'Unknown goal type' };
+
+      return {
+        goalType: goal.goalType,
+        target: goal.target,
+        distance: goal.distance,
+        time: goal.time,
+        deadline: goal.deadline,
+        met,
+        message
+      };
     });
 
     res.render('goal-status', { goals: statusReport, username: user.username });
@@ -32,5 +37,7 @@ router.get('/status', async (req, res) => {
     res.status(500).send('Server error');
   }
 });
+
+
 
 module.exports = router;

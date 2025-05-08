@@ -1,36 +1,36 @@
 extends layout
 
 block content
-  .container
+  .container.mt-5
     h2 Set a Fitness Goal
 
-    form(action="/api/goal/add" method="POST")
+    form(action="/api/goal/add", method="POST")
       .mb-3
-        label(for="email") Email
-        input.form-control(type="email", name="email", placeholder="Enter your email", required)
+        label.form-label(for="email") Email
+        input.form-control(type="email", name="email", id="email", placeholder="Enter your email", required)
 
       .mb-3
-        label(for="goalType") Goal Type
-        select.form-control(name="goalType" required)
-          option(value="Weight Loss") Weight Loss
-          option(value="Running") Running
-          option(value="Cycling") Cycling
-          option(value="General Fitness") General Fitness
+        label.form-label(for="goalType") Goal Type
+        select.form-select(name="goalType", id="goalType", required)
+          option(value="weight") Weight Loss
+          option(value="run") Running
+          option(value="cycling") Cycling
+          option(value="fitness") General Fitness
 
       .mb-3
-        label(for="target") Target Description
-        input.form-control(type="text", name="target", placeholder="e.g. Lose 5kg or Run 5km")
+        label.form-label(for="target") Target
+        input.form-control(type="text", name="target", id="target", placeholder="e.g. 70kg or 5km", required)
 
       .mb-3
-        label(for="distance") Distance (km)
-        input.form-control(type="number", name="distance", placeholder="Optional: e.g. 5")
+        label.form-label(for="distance") Distance (km)
+        input.form-control(type="number", name="distance", id="distance", placeholder="Optional")
 
       .mb-3
-        label(for="time") Time (minutes)
-        input.form-control(type="number", name="time", placeholder="Optional: e.g. 30")
+        label.form-label(for="time") Time (minutes)
+        input.form-control(type="number", name="time", id="time", placeholder="Optional")
 
       .mb-3
-        label(for="deadline") Deadline
-        input.form-control(type="date", name="deadline")
+        label.form-label(for="deadline") Deadline
+        input.form-control(type="date", name="deadline", id="deadline", required)
 
       button.btn.btn-primary(type="submit") Set Goal
