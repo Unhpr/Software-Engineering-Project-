@@ -11,39 +11,39 @@ html
       .container
         a.navbar-brand(href='/') HealthTracker
 
-ul.navbar-nav.flex-row.gap-3
-  li.nav-item
-    a.nav-link.text-white(href='/') Home
-  li.nav-item
-    a.nav-link.text-white(href='/exercise') Exercise
-  li.nav-item
-    a.nav-link.text-white(href='/diet') Diet
-  li.nav-item
-    a.nav-link.text-white(href='/group') Group
-  li.nav-item.dropdown
-    a.nav-link.dropdown-toggle.text-white(href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false")
-      | Set Goal
-    ul.dropdown-menu
-      li
-        a.dropdown-item(href="/create-goal") Fitness Goal
-      li
-        a.dropdown-item(href="/log-weight") Weight Goal
+        button.navbar-toggler(type="button", data-bs-toggle="collapse", data-bs-target="#navbarNav")
+          span.navbar-toggler-icon
 
-
-
-
-        ul.navbar-nav.ms-auto
-          if username
+        .collapse.navbar-collapse#navbarNav
+          ul.navbar-nav.me-auto.mb-2.mb-lg-0
             li.nav-item
-              span.nav-link.text-white Hello #{username}
+              a.nav-link.text-white(href='/') Home
             li.nav-item
-              a.nav-link.text-white(href='/logout') Logout
-          else
+              a.nav-link.text-white(href='/exercise') Exercise
             li.nav-item
-              a.nav-link.text-white(href='/login') Login
+              a.nav-link.text-white(href='/diet') Diet
             li.nav-item
-               a.nav-link.text-white(href='/dashboard') Dashboard
+              a.nav-link.text-white(href='/group') Group
+            li.nav-item.dropdown
+              a.nav-link.dropdown-toggle.text-white(href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false")
+                | Set Goal
+              ul.dropdown-menu
+                li
+                  a.dropdown-item(href="/create-goal") Fitness Goal
+                li
+                  a.dropdown-item(href="/log-weight") Weight Goal
 
+          ul.navbar-nav.ms-auto
+            if username
+              li.nav-item
+                span.nav-link.text-white Hello #{username}
+              li.nav-item
+                a.nav-link.text-white(href='/logout') Logout
+            else
+              li.nav-item
+                a.nav-link.text-white(href='/login') Login
+              li.nav-item
+                a.nav-link.text-white(href='/dashboard') Dashboard
 
     .page-wrapper.mt-5.pt-5
       .container
@@ -51,4 +51,3 @@ ul.navbar-nav.flex-row.gap-3
 
     script(src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js")
     script(src="/scripts/group.js")
-
