@@ -1,0 +1,31 @@
+extends layout
+
+block content
+  h2 User Registration
+
+  form(action="/api/auth/register" method="POST")
+    label(for="username") Username:
+    input(type="text" name="username" required)
+    br
+
+    label(for="name") Full Name:
+    input(type="text" name="name" required)
+    br
+
+    label(for="email") Email:
+    input(type="email" name="email" required)
+    br
+
+    label(for="height") Height (cm):
+    input(type="number" name="height" required)
+    br
+
+    label(for="weight") Weight (kg):
+    input(type="number" name="weight" required)
+    br
+
+    label(for="targetWeight") Target Weight (kg) [Optional]:
+    input(type="number" name="targetWeight")
+    br
+
+    button(type="submit") Register
