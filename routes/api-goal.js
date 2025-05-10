@@ -1,44 +1,48 @@
 const express = require('express');
 const router = express.Router();
-const UserGoal = require('../models/UserGoal');
+const Goal = require('../models/UserGoal');
+const User = require('../models/UserProfile');
 
 
-// routes/api-goal.js
-router.post('/add', async (req, res) => {
-  const { email, goalType, target, distance, time, deadline } = req.body;
-
+router.post('/', async (req, res) => {
   try {
-    const newGoal = new UserGoal({
-      email,
+    const username = req.session.username;
+    if (!username) return res.status(401).json({ error: 'Not logged in' });
+
+    const user = await User.findOne({ username });
+    if (!user) return res.status(404).json({ error: 'User not found' });
+
+    const { goalType, target, deadline } = req.body;
+
+    const newGoal = new Goal({
       goalType,
       target,
-      distance: distance ? Number(distance) : undefined,
-      time: time ? Number(time) : undefined,
-      deadline: deadline ? new Date(deadline) : undefined
+      deadline,
+      userId: user._id
     });
 
     await newGoal.save();
-    res.redirect('/dashboard'); 
+    res.status(201).json({ message: "Goal saved!", data: newGoal });
   } catch (err) {
-    res.status(500).send("Failed to save goal: " + err.message);
+    console.error('Error saving goal:', err);
+    res.status(500).json({ error: 'Failed to save goal' });
   }
 });
 
 
-
-
-router.get('/:email', async (req, res) => {
-  const goals = await UserGoal.find({ email: req.params.email });
-  res.send(goals);
-});
-
-
-router.get('/all', async (req, res) => {
+router.get('/', async (req, res) => {
   try {
-    const goals = await UserGoal.find().sort({ createdAt: -1 });
+    const username = req.session.username;
+    if (!username) return res.status(401).json({ error: 'Not logged in' });
+
+    const user = await User.findOne({ username });
+    if (!user) return res.status(404).json({ error: 'User not found' });
+
+    const goals = await Goal.find({ userId: user._id });
     res.json(goals);
   } catch (err) {
-    res.status(500).json({ message: 'Failed to fetch goals.' });
+    console.error('Error fetching goals:', err);
+    res.status(500).json({ error: 'Failed to fetch goals' });
   }
 });
 

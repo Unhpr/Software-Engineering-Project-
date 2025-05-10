@@ -1,32 +1,38 @@
 document.addEventListener("DOMContentLoaded", () => {
   const form = document.getElementById("exerciseForm");
   const nameInput = document.getElementById("exerciseInput");
-  const activeList = document.getElementById("activeList");
-  const completedList = document.getElementById("completedList");
+  const exerciseList = document.getElementById("exerciseList"); 
+  const searchInput = document.getElementById("exerciseSearch");
 
-  form.addEventListener("submit", (e) => {
+  let allExercises = [];
+
+ 
+  form.addEventListener("submit", async (e) => {
     e.preventDefault();
     const name = nameInput.value.trim();
     if (!name) return;
 
-    const li = document.createElement("li");
-    li.textContent = name;
+    try {
+      const res = await fetch('/api/exercise/items', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ name })
+      });
 
-    const btn = document.createElement("button");
-    btn.textContent = "Mark as done";
-    btn.style.marginLeft = "10px";
-    btn.className = "btn btn-sm btn-outline-secondary";
-    btn.addEventListener("click", () => {
-      li.removeChild(btn);
-      completedList.appendChild(li);
-    });
+      if (!res.ok) throw new Error('Failed to save exercise');
 
-    li.appendChild(btn);
-    activeList.appendChild(li);
-    nameInput.value = "";
+      const savedItem = await res.json();
+      allExercises.push(savedItem);  
+      renderExerciseList(allExercises);  
+      nameInput.value = "";
+
+    } catch (err) {
+      console.error('Error adding exercise:', err);
+    }
   });
 
-  let allExercises = [];
 
   async function loadExercises() {
     try {
@@ -38,19 +44,19 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
+
   function renderExerciseList(list) {
-    const container = document.getElementById('exerciseList');
-    if (!container) return;
-    container.innerHTML = '';
+    if (!exerciseList) return;
+    exerciseList.innerHTML = '';
     list.forEach(item => {
       const li = document.createElement('li');
-      li.className = 'list-group-item';
+      li.className = 'list-group-item d-flex justify-content-between align-items-center';
       li.textContent = item.name;
-      container.appendChild(li);
+      exerciseList.appendChild(li);
     });
   }
 
-  const searchInput = document.getElementById('exerciseSearch');
+
   if (searchInput) {
     searchInput.addEventListener('input', (e) => {
       const keyword = e.target.value.toLowerCase();
@@ -58,6 +64,7 @@ document.addEventListener("DOMContentLoaded", () => {
       renderExerciseList(filtered);
     });
   }
+
 
   loadExercises();
 });
