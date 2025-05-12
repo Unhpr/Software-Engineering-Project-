@@ -7,43 +7,26 @@ block content
     h4.mb-3 Create Group
     form#createForm.mb-4
       .mb-3
-        label.form-label(for="groupName") Group Name
-        input.form-control(type="text", id="groupName", placeholder="e.g. FitnessClub")
-      button.btn.btn-primary(type="submit") Create Group
+        label.form-label(for="groupName") Name
+        input#groupName.form-control(type="text" placeholder="e.g. FitnessClub")
+      button.btn.btn-primary(type="submit") Create
 
     h4.mb-3 Join Group
     form#joinForm.mb-4
       .mb-3
-        label.form-label(for="inviteCode") Invite Code
-        input.form-control(type="text", id="inviteCode", placeholder="Enter invite code")
-      button.btn.btn-success(type="submit") Join Group
-
-    h4.mb-3 Goal Tracker
-    form#goalForm.mb-4
-      .mb-3
-        label.form-label(for="goalType") Goal Type
-        input.form-control(type="text", id="goalType", placeholder="e.g. Lose Weight")
-      .mb-3
-        label.form-label(for="goalTarget") Target
-        input.form-control(type="text", id="goalTarget", placeholder="e.g. 65kg")
-      .mb-3
-        label.form-label(for="goalDeadline") Deadline
-        input.form-control(type="date", id="goalDeadline")
-      button.btn.btn-dark.w-100(type="submit") Submit Goal
+        label.form-label(for="inviteCode") Code
+        input#inviteCode.form-control(type="text" placeholder="Enter code")
+      button.btn.btn-success(type="submit") Join
 
     hr
-    h5.text-muted My Groups:
-    ul#myGroups.list-group
+    h5.text-muted My Groups
+    ul#myGroups.list-group.mb-3
 
-    button#leaveGroupBtn.btn.btn-warning.mt-3 Leave Group
-    button#deleteGroupBtn.btn.btn-danger.mt-3 Delete Group
+    button#leaveGroupBtn.btn.btn-warning(type="button" disabled) Leave
+    button#deleteGroupBtn.btn.btn-danger.ml-2(type="button" disabled) Delete
 
     hr
-    h5.text-muted Group Members:
+    h5.text-muted Members
     ul#memberList.list-group
-
-    hr
-    h5.text-muted Submitted Goals:
-    ul#goalList.list-group
 
   script(src="/scripts/group.js")

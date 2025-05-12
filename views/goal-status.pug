@@ -16,7 +16,10 @@ block content
             p.card-text Time: #{goal.time} minutes
           if goal.deadline
             p.card-text Deadline: #{goal.deadline.toDateString()}
+          
           if goal.met
             p.text-success #{goal.message}
           else
             p.text-warning #{goal.message}
+
+

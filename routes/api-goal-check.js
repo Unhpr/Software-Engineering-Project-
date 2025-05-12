@@ -1,35 +1,45 @@
-const express = require('express');
-const router = express.Router();
-const UserGoal = require('../models/UserGoal');
-const UserProfile = require('../models/UserProfile');
+// routes/goal-status.js
+const express      = require('express');
+const router       = express.Router();
+const UserGoal     = require('../models/UserGoal');
+const UserProfile  = require('../models/UserProfile');
 
 router.get('/status', async (req, res) => {
-  const email = req.session.email;
-  if (!email) return res.redirect('/login');
+  const userId = req.session.userId;
+  if (!userId) return res.redirect('/login');
 
   try {
-    const goals = await UserGoal.find({ email });
-    const user = await UserProfile.findOne({ email });
+    // load user (assumes UserProfile has a `weight` and `username` field)
+    const user = await UserProfile.findById(userId);
+    if (!user) return res.redirect('/login');
 
-    if (!user) return res.status(404).send('User not found');
+    
+    const goals = await UserGoal.find({ userId });
 
     const statusReport = goals.map(goal => {
-      const targetWeight = parseFloat(goal.target);
-      const met = goal.goalType === 'Weight Loss' && user.weight <= targetWeight;
+      let met = false;
+      if (goal.goalType === 'Weight Loss') {
+        met = user.weight <= parseFloat(goal.target);
+      }
+      
+
       return {
         goalType: goal.goalType,
-        target: goal.target,
+        target:   goal.target,
         met,
-        message: met ? "Goal achieved!" : "Goal in progress."
+        message:  met ? 'Goal achieved!' : 'Goal in progress.'
       };
     });
 
-    res.render('goal-status', { goals: statusReport, username: user.username });
+    res.render('goal-status', {
+      username: user.username,
+      goals:    statusReport
+    });
   } catch (err) {
+    console.error(err);
     res.status(500).send('Server error');
   }
 });
-
 
 
 
