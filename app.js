@@ -20,6 +20,7 @@ app.use((req, res, next) => {
 app.use(express.urlencoded({ extended: true }));
 app.use('/api/goal-check', require('./routes/api-goal-check'));
 
+
 app.set('view engine', 'pug');
 app.set('views', path.join(__dirname, 'views'));
 

@@ -1,118 +1,122 @@
-const express = require('express');
-const router = express.Router();
-const Group = require('../models/Group');
-const User = require('../models/UserProfile');
+// routes/api-group.js
+const express       = require('express');
+const router        = express.Router();        // ← make sure this is express.Router()
+const Group         = require('../models/Group');
 const { v4: uuidv4 } = require('uuid');
 
-
+// Create a new group
 router.post('/create', async (req, res) => {
+  const userId = req.session.userId;
+  if (!userId) return res.status(401).json({ error: 'Unauthorized' });
+  const { name } = req.body;
+
   try {
-    const userId = req.session.userId;
-    if (!userId) return res.status(401).json({ error: 'Unauthorized' });
-
-    const { name } = req.body;
     const inviteCode = uuidv4().slice(0, 8);
-
     const group = new Group({
       name,
       inviteCode,
-      members: [userId],
+      members:   [userId],
       createdBy: userId
     });
     await group.save();
-
-    res.status(201).json({ message: 'Group created', group });
+    res.status(201).json(group);
   } catch (err) {
-    console.error('Group creation error:', err);
-    res.status(500).json({ error: 'Failed to create group' });
+    console.error('Create group error:', err);
+    res.status(500).json({ error: err.message });
   }
 });
 
-
 router.post('/join', async (req, res) => {
-  try {
-    const userId = req.session.userId;
-    if (!userId) return res.status(401).json({ error: 'Unauthorized' });
+  const userId = req.session.userId;
+  if (!userId) return res.status(401).json({ error: 'Unauthorized' });
 
-    const { inviteCode } = req.body;
+  const { inviteCode } = req.body;
+  try {
     const group = await Group.findOne({ inviteCode });
     if (!group) return res.status(404).json({ error: 'Group not found' });
 
-    if (!group.members.includes(userId)) {
-      group.members.push(userId);
-      await group.save();
+    if (group.members.includes(userId)) {
+      return res.status(400).json({ error: 'You are already in this group' });
     }
 
-    res.json({ message: 'Joined group', group });
+    group.members.push(userId);
+    await group.save();
+    res.json(group);
   } catch (err) {
-    console.error('Join group error:', err);
-    res.status(500).json({ error: 'Failed to join group' });
+    console.error(err);
+    res.status(500).json({ error: err.message });
   }
 });
 
-
+// List all groups current user belongs to
 router.get('/mine', async (req, res) => {
-  try {
-    const userId = req.session.userId;
-    if (!userId) return res.status(401).json({ error: 'Unauthorized' });
-
-    const groups = await Group.find({ members: userId });
-    res.json(groups);
-  } catch (err) {
-    console.error('Fetch groups error:', err);
-    res.status(500).json({ error: 'Failed to fetch groups' });
-  }
-});
-
-
-router.get('/members', async (req, res) => {
   const userId = req.session.userId;
   if (!userId) return res.status(401).json({ error: 'Unauthorized' });
 
   try {
-    const group = await Group.findOne({ members: userId }).populate('members', 'username email');
+    const groups = await Group
+      .find({ members: userId })
+      .select('_id name');      // only return those two fields
+    res.json(groups);
+  } catch (err) {
+    console.error('Fetch my-groups error:', err);
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// Get members of a specific group
+router.get('/members/:groupId', async (req, res) => {
+  const userId = req.session.userId;
+  if (!userId) return res.status(401).json({ error: 'Unauthorized' });
+
+  try {
+    const group = await Group
+      .findOne({ _id: req.params.groupId, members: userId })
+      .populate('members', 'username');  // pull in usernames
     if (!group) return res.status(404).json({ error: 'Group not found' });
 
     res.json(group.members);
   } catch (err) {
-    console.error('Failed to fetch members:', err);
-    res.status(500).json({ error: 'Failed to fetch members' });
+    console.error('Fetch members error:', err);
+    res.status(500).json({ error: err.message });
   }
 });
 
-
-router.post('/leave', async (req, res) => {
+// Leave a group
+router.post('/leave/:groupId', async (req, res) => {
   const userId = req.session.userId;
   if (!userId) return res.status(401).json({ error: 'Unauthorized' });
 
   try {
-    const group = await Group.findOne({ members: userId });
+    const group = await Group.findById(req.params.groupId);
     if (!group) return res.status(404).json({ error: 'Group not found' });
 
     group.members = group.members.filter(id => id.toString() !== userId);
     await group.save();
-
-    res.json({ message: 'Left the group' });
+    res.json({ message: 'Left group' });
   } catch (err) {
     console.error('Leave group error:', err);
-    res.status(500).json({ error: 'Failed to leave group' });
+    res.status(500).json({ error: err.message });
   }
 });
 
-
-router.delete('/delete', async (req, res) => {
+// Delete a group (only if you created it)
+router.delete('/delete/:groupId', async (req, res) => {
   const userId = req.session.userId;
   if (!userId) return res.status(401).json({ error: 'Unauthorized' });
 
   try {
-    const group = await Group.findOne({ createdBy: userId });
-    if (!group) return res.status(404).json({ error: 'No group found to delete' });
+    const group = await Group.findById(req.params.groupId);
+    if (!group) return res.status(404).json({ error: 'Group not found' });
+    if (group.createdBy.toString() !== userId) {
+      return res.status(403).json({ error: 'Forbidden' });
+    }
 
     await group.deleteOne();
     res.json({ message: 'Group deleted' });
   } catch (err) {
     console.error('Delete group error:', err);
-    res.status(500).json({ error: 'Failed to delete group' });
+    res.status(500).json({ error: err.message });
   }
 });
 

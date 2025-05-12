@@ -7,12 +7,11 @@ const UserGoalSchema = new mongoose.Schema({
     ref: 'UserProfile', 
     required: true
   },
-  email: { type: String, required: true },
-  goalType: { type: String, required: true },
-  target: { type: String },
-  distance: { type: Number },
-  time: { type: Number },
-  deadline: { type: Date }
+  goalType:  { type: String, required: true },
+  target:    { type: String },                // keep optional if you like
+  distance:  { type: Number, required: true },// e.g. in km
+  time:      { type: Number, required: true },// e.g. in minutes
+  deadline:  { type: Date,   required: true }
 }, { timestamps: true });
 
 module.exports = mongoose.model('UserGoal', UserGoalSchema);

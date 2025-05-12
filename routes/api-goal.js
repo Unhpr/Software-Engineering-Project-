@@ -4,28 +4,34 @@ const Goal = require('../models/UserGoal');
 const User = require('../models/UserProfile');
 
 
-router.post('/', async (req, res) => {
+
+router.post('/add', async (req, res) => {
+  const { goalType, target, distance, time, deadline } = req.body;
+  // simple validation
+  if (!goalType || !distance || !time || !deadline) {
+    return res.status(400).send('All fields are required');
+  }
+
   try {
+
     const username = req.session.username;
     if (!username) return res.status(401).json({ error: 'Not logged in' });
 
     const user = await User.findOne({ username });
     if (!user) return res.status(404).json({ error: 'User not found' });
-
-    const { goalType, target, deadline } = req.body;
-
-    const newGoal = new Goal({
-      goalType,
-      target,
-      deadline,
-      userId: user._id
+    const goal = new Goal({
+      userId:   req.session.userId,               // from your session
+      goalType,                                  // e.g. "run", "swim"
+      target,                                    // optional text target
+      distance: Number(distance),                // e.g. kilometers
+      time:     Number(time),                    // e.g. minutes
+      deadline: new Date(deadline)               // e.g. "2025-06-01"
     });
 
-    await newGoal.save();
-    res.status(201).json({ message: "Goal saved!", data: newGoal });
+    await goal.save();
+    res.redirect('/dashboard');
   } catch (err) {
-    console.error('Error saving goal:', err);
-    res.status(500).json({ error: 'Failed to save goal' });
+    res.status(500).send("Failed to create goal: " + err.message);
   }
 });
 
