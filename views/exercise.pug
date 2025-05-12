@@ -1,19 +1,34 @@
 extends layout
 
 block content
-  .exercise-card.mx-auto
+  .exercise-card.mt-5
     h2.text-center.mb-4 Exercise Plan
 
-    form#exerciseForm(class="mb-3")
+    form#exerciseForm(class="mb-4")
       .mb-3
-        label.form-label(for="exerciseInput") Exercise Name
-        input.form-control(type="text", id="exerciseInput", placeholder="e.g. Push-ups")
+        label(for="exerciseInput") Exercise Name
+        input#exerciseInput.form-control(type="text", placeholder="e.g. Running")
+
+      .mb-3
+        label(for="type") Type
+        select#type.form-select
+          option(value="Cardio") Cardio
+          option(value="Strength") Strength
+          option(value="Flexibility") Flexibility
+
+      .mb-3
+        label(for="duration") Duration (minutes)
+        input#duration.form-control(type="number")
+
+      .mb-3
+        label(for="distance") Distance (km)
+        input#distance.form-control(type="number")
+
       button.btn.btn-success(type="submit") Add Exercise
 
     hr
-    h4.mt-4 Active Exercises
-    input.form-control.mb-3(type="text", id="exerciseSearch", placeholder="Search...")
 
-    ul#exerciseList.list-group
+    h4.mt-4 Active Exercises
+    ul#exerciseList.list-group.mt-2
 
   script(src="/scripts/exercise.js")

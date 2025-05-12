@@ -1,94 +1,48 @@
-document.addEventListener("DOMContentLoaded", () => {
-  const dietForm = document.getElementById("dietForm");
-  const dietList = document.getElementById("dietList");
-  const totalCaloriesDisplay = document.getElementById("totalCalories");
-  const customFoodForm = document.getElementById("customFoodForm");
+document.addEventListener('DOMContentLoaded', () => {
+  const form = document.getElementById('dietForm');
+  const list = document.getElementById('dietList');
 
-  let allDietLogs = [];
-  let totalCalories = 0;
+  form.addEventListener('submit', async e => {
+    e.preventDefault();
+    const name = document.getElementById('foodInput').value.trim();
+    const calories = document.getElementById('caloriesInput').value;
+    const mealType = document.getElementById('mealType').value;
 
+    if (!name || !calories || !mealType) return alert('Fill all fields');
 
-  if (dietForm) {
-    dietForm.addEventListener("submit", async (e) => {
-      e.preventDefault();
-      const food = document.getElementById("foodInput").value;
-      const calories = parseInt(document.getElementById("caloriesInput").value);
-
-      if (food && !isNaN(calories)) {
-        try {
-          const res = await fetch('/api/food/log', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ name: food, calories })
-          });
-
-          if (!res.ok) throw new Error('Failed to save food log');
-
-          const savedItem = await res.json();
-          allDietLogs.push(savedItem);
-          renderDietLogs(allDietLogs);
-
-          dietForm.reset();
-        } catch (err) {
-          console.error('Error saving food:', err);
-          alert('Failed to save food log.');
-        }
-      }
+    const res = await fetch('/api/food', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name, calories, mealType })
     });
-  }
-
-
-  async function loadDietLogs() {
-    try {
-      const res = await fetch('/api/food/log');
-      const data = await res.json();
-      allDietLogs = data;
-      renderDietLogs(allDietLogs);
-    } catch (err) {
-      console.error('Error loading diet logs:', err);
+    if (res.ok) {
+      form.reset();
+      loadFood();
+    } else {
+      alert('Failed to add food');
     }
-  }
+  });
 
-
-  function renderDietLogs(list) {
-    dietList.innerHTML = '';
-    totalCalories = 0;
-
-    list.forEach(log => {
+  async function loadFood() {
+    const res = await fetch('/api/food');
+    const foods = await res.json();
+    list.innerHTML = '';
+    foods.forEach(item => {
       const li = document.createElement('li');
-      li.className = 'list-group-item';
-      li.textContent = `${log.name} - ${log.calories} kcal`;
-      dietList.appendChild(li);
-      totalCalories += parseInt(log.calories);
+      li.className = 'list-group-item d-flex justify-content-between align-items-center';
+      li.innerHTML = `${item.name} (${item.mealType}) - ${item.calories} kcal
+        <button class="btn btn-sm btn-danger ms-2" data-id="${item._id}">Delete</button>`;
+      list.appendChild(li);
     });
 
-    totalCaloriesDisplay.textContent = totalCalories;
+    list.querySelectorAll('button').forEach(btn => {
+      btn.addEventListener('click', async () => {
+        const id = btn.getAttribute('data-id');
+        await fetch(`/api/food/${id}`, { method: 'DELETE' });
+        loadFood();
+      });
+    });
   }
 
- 
-  if (customFoodForm) {
-    customFoodForm.onsubmit = async (e) => {
-      e.preventDefault();
-      const name = document.getElementById('foodName').value;
-      const calories = document.getElementById('calories').value;
-
-      if (name && calories) {
-        try {
-          const res = await fetch('/api/food/add', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ name, calories })
-          });
-          const result = await res.json();
-          alert(result.message || 'Food added to database!');
-          customFoodForm.reset();
-        } catch (err) {
-          console.error(err);
-          alert('Failed to save food to database.');
-        }
-      }
-    };
-  }
-
-  loadDietLogs(); 
+  loadFood();
 });

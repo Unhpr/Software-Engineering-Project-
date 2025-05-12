@@ -1,33 +1,30 @@
 extends layout
 
 block content
-  .diet-card.mx-auto
-    h2.text-center.mb-4 Diet Plan
+  .diet-card.mt-5
+    h2.text-center.mb-4 Diet Tracker
 
-    form#dietForm(class="mb-3")
+    form#dietForm(class="mb-4")
       .mb-3
-        label.form-label(for="foodInput") Food Name
-        input.form-control(type="text", id="foodInput", placeholder="e.g. Banana")
+        label(for="foodInput") Food Name
+        input#foodInput.form-control(type="text", placeholder="e.g. Banana")
+
       .mb-3
-        label.form-label(for="caloriesInput") Calories
-        input.form-control(type="number", id="caloriesInput", placeholder="e.g. 100")
+        label(for="caloriesInput") Calories
+        input#caloriesInput.form-control(type="number")
+
+      .mb-3
+        label(for="mealType") Meal Type
+        select#mealType.form-select
+          option(value="Breakfast") Breakfast
+          option(value="Lunch") Lunch
+          option(value="Dinner") Dinner
+          option(value="Snack") Snack
+
       button.btn.btn-success(type="submit") Add Food
 
-    h4.mt-4 Your Diet List:
-    ul.list-group#dietList
-
-    h4.mt-4 Total Calories: 
-    span#totalCalories 0
-
     hr
-    h4.mt-5 Add Food to Database
-    form#customFoodForm
-      .mb-3
-        label.form-label(for="foodName") Food Name
-        input.form-control(type="text", id="foodName", placeholder="e.g. Apple")
-      .mb-3
-        label.form-label(for="calories") Calories
-        input.form-control(type="number", id="calories", placeholder="e.g. 95")
-      button.btn.btn-primary(type="submit") Save to Database
+    h4.mt-4 Food Log
+    ul#dietList.list-group.mt-2
 
   script(src="/scripts/diet.js")

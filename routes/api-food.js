@@ -1,10 +1,9 @@
 const express = require('express');
 const router = express.Router();
-const FoodLog = require('../models/FoodItem');
+const FoodItem = require('../models/FoodItem');
 const User = require('../models/UserProfile');
 
-
-router.post('/log', async (req, res) => {
+router.post('/', async (req, res) => {
   try {
     const username = req.session.username;
     if (!username) return res.status(401).json({ error: 'Not logged in' });
@@ -12,24 +11,23 @@ router.post('/log', async (req, res) => {
     const user = await User.findOne({ username });
     if (!user) return res.status(404).json({ error: 'User not found' });
 
-    const { name, calories } = req.body;
-    const newLog = new FoodLog({
+    const { name, calories, mealType } = req.body;
+    const newFood = new FoodItem({
       name,
       calories,
-      userId: user._id,
-      date: new Date()
+      mealType,
+      userId: user._id
     });
 
-    await newLog.save();
-    res.status(201).json(newLog);
+    await newFood.save();
+    res.status(201).json(newFood);
   } catch (err) {
-    console.error('Error saving food log:', err);
-    res.status(500).json({ error: 'Failed to save food log' });
+    console.error('Error saving food:', err);
+    res.status(500).json({ error: 'Failed to save food' });
   }
 });
 
-
-router.get('/log', async (req, res) => {
+router.get('/', async (req, res) => {
   try {
     const username = req.session.username;
     if (!username) return res.status(401).json({ error: 'Not logged in' });
@@ -37,11 +35,20 @@ router.get('/log', async (req, res) => {
     const user = await User.findOne({ username });
     if (!user) return res.status(404).json({ error: 'User not found' });
 
-    const logs = await FoodLog.find({ userId: user._id });
-    res.json(logs);
+    const items = await FoodItem.find({ userId: user._id });
+    res.json(items);
   } catch (err) {
-    console.error('Error fetching food logs:', err);
-    res.status(500).json({ error: 'Failed to fetch food logs' });
+    console.error('Fetch food error:', err);
+    res.status(500).json({ error: 'Failed to fetch food' });
+  }
+});
+
+router.delete('/:id', async (req, res) => {
+  try {
+    await FoodItem.findByIdAndDelete(req.params.id);
+    res.json({ message: 'Food item deleted' });
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to delete item' });
   }
 });
 
