@@ -30,6 +30,22 @@ router.post('/items', async (req, res) => {
   }
 });
 
+// in your router (e.g. routes/exercise.js)
+router.patch('/items/:id/complete', async (req, res) => {
+  try {
+    const item = await ExerciseItem.findByIdAndUpdate(
+      req.params.id,
+      { completed: true },
+      { new: true }
+    );
+    if (!item) return res.status(404).json({ error: 'Not found' });
+    res.json({ message: 'Marked completed', data: item });
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to update' });
+  }
+});
+
+
 router.get('/items', async (req, res) => {
   try {
     const username = req.session.username;

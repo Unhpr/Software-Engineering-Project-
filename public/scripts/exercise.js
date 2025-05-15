@@ -7,20 +7,33 @@ document.addEventListener("DOMContentLoaded", () => {
   const exerciseList = document.getElementById("exerciseList");
 
   async function loadExercises() {
-    try {
-      const res = await fetch('/api/exercise/items');
-      const exercises = await res.json();
-      exerciseList.innerHTML = '';
-      exercises.forEach(ex => {
-        const li = document.createElement('li');
-        li.className = 'list-group-item';
-        li.textContent = `${ex.name} (${ex.type}) - ${ex.duration || 0}min, ${ex.distance || 0}km`;
+    const res = await fetch('/api/exercise/items');
+    const items = await res.json();
+    exerciseList.innerHTML = '';
+    document.getElementById('completedList').innerHTML = '';
+  
+    items.forEach(ex => {
+      const li = document.createElement('li');
+      li.className = 'list-group-item d-flex justify-content-between align-items-center';
+      li.textContent = `${ex.name} (${ex.type}) - ${ex.duration||0}min, ${ex.distance||0}km`;
+      
+      if (!ex.completed) {
+        const btn = document.createElement('button');
+        btn.className = 'btn btn-sm btn-outline-primary';
+        btn.textContent = 'Complete';
+        btn.onclick = async () => {
+          await fetch(`/api/exercise/items/${ex._id}/complete`, { method: 'PATCH' });
+          loadExercises();
+        };
+        li.appendChild(btn);
         exerciseList.appendChild(li);
-      });
-    } catch (err) {
-      console.error("Failed to load exercises:", err);
-    }
+      } else {
+        li.classList.add('text-muted');
+        document.getElementById('completedList').appendChild(li);
+      }
+    });
   }
+  
 
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
