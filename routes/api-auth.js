@@ -4,7 +4,7 @@ const UserProfile = require('../models/UserProfile');
 
 
 router.post('/register', async (req, res) => {
-  console.log("📩 Register body:", req.body);
+  console.log("Register body:", req.body);
 
   const { username, name, email, height, weight, targetWeight, password } = req.body;
 
@@ -33,7 +33,7 @@ router.post('/register', async (req, res) => {
     req.session.username = newUser.username;
     req.session.email = newUser.email;
 
-    console.log("✅ Session set after registration:", {
+    console.log("Session set after registration:", {
       userId: newUser._id,
       username: newUser.username
     });
@@ -49,7 +49,7 @@ router.post('/register', async (req, res) => {
       feedback
     });
   } catch (error) {
-    console.error('❌ Registration error:', error);
+    console.error('Registration error:', error);
     res.status(500).json({ message: 'Error saving user', error: error.message });
   }
 });
@@ -70,14 +70,14 @@ router.post('/login', async (req, res) => {
     req.session.username = user.username;
     req.session.email = user.email;
 
-    console.log("✅ Session set after login:", {
+    console.log("Session set after login:", {
       userId: user._id,
       username: user.username
     });
 
     res.redirect('/dashboard');
   } catch (err) {
-    console.error('❌ Login error:', err);
+    console.error(' Login error:', err);
     res.status(500).send('Login error');
   }
 });
