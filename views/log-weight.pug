@@ -1,20 +1,19 @@
+//- views/weight.pug
 extends layout
 
 block content
-  .container
-    h2 Log Your Weight
+  .container.mt-5
+    .card.mx-auto.shadow(style="max-width:600px;")
+      .card-body
+        h2.card-title.mb-4 Log Your Weight
+        form(action="/api/weight/add" method="POST")
+          .row
+            .col-md-6.mb-3
+              label.form-label(for="date") Date
+              input.form-control(type="date" name="date" id="date")
+            .col-md-6.mb-3
+              label.form-label(for="weight") Current Weight (kg)
+              input.form-control(type="number" name="weight" id="weight" step="0.1" required)
 
-    form(action="/api/weight/add" method="POST")
-      .mb-3
-        label(for="email") Email
-        input.form-control(type="email", name="email", placeholder="Enter your email", required)
-
-      .mb-3
-        label(for="weight") Current Weight (kg)
-        input.form-control(type="number", name="weight", step="0.1", required)
-
-      .mb-3
-        label(for="date") Date
-        input.form-control(type="date", name="date")
-
-      button.btn.btn-primary(type="submit") Submit Weight
+          .d-grid.mt-4
+            button.btn.btn-primary(type="submit") Submit Weight

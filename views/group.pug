@@ -1,33 +1,48 @@
+//- views/group.pug
 extends layout
 
 block content
   .container.mt-5
     h2.text-center.mb-4 Group Management
 
-    h4.mb-3 Create Group
-    form#createForm.mb-4
-      .mb-3
-        label.form-label(for="groupName") Name
-        input#groupName.form-control(type="text" placeholder="e.g. FitnessClub")
-      button.btn.btn-primary(type="submit") Create
+    .row.g-4
+     
+      .col-md-6
+        .card.shadow-sm
+          .card-body
+            h5.card-title.mb-3 🆕 Create a Group
+            form#createForm.d-flex
+              input#groupName.form-control(type="text" placeholder="e.g. FitnessClub")
+              button.btn.btn-primary.ms-2(type="submit")
+                | Create
 
-    h4.mb-3 Join Group
-    form#joinForm.mb-4
-      .mb-3
-        label.form-label(for="groupIdentifier") Group name or code
-        input#groupIdentifier.form-control(type="text" placeholder="Enter name or code")
-      button.btn.btn-success(type="submit") Join
+     
+      .col-md-6
+        .card.shadow-sm
+          .card-body
+            h5.card-title.mb-3 🔗 Join a Group
+            form#joinForm.d-flex
+              input#groupIdentifier.form-control(type="text" placeholder="Name or code")
+              button.btn.btn-success.ms-2(type="submit")
+                | Join
 
-    hr
-    h5.text-muted My Groups
-    ul#myGroups.list-group.mb-3(style="max-height:200px; overflow-y:auto;")
+   
+    .card.shadow-sm.mt-4
+      .card-body
+        h5.card-title.mb-3 My Groups
+        ul#myGroups.list-group.mb-3(style="max-height:200px; overflow-y:auto;")
+          
+        .d-flex.justify-content-end.g-2
+          button#leaveGroupBtn.btn.btn-warning(type="button" disabled)  
+            | Leave
+          button#deleteGroupBtn.btn.btn-danger(type="button" disabled)  
+            | Delete
 
-
-    button#leaveGroupBtn.btn.btn-warning(type="button" disabled) Leave
-    button#deleteGroupBtn.btn.btn-danger.ml-2(type="button" disabled) Delete
-
-    hr
-    h5.text-muted Members
-    ul#memberList.list-group
+    
+    .card.shadow-sm.mt-4
+      .card-body
+        h5.card-title.mb-3 Members
+        ul#memberList.list-group
+          
 
   script(src="/scripts/group.js")

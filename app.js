@@ -36,6 +36,7 @@ const groupRouter = require('./routes/group');
 const goalApi = require('./routes/api-goal');
 const groupApi = require('./routes/api-group');
 const apiFoodRouter = require('./routes/api-food');
+const apiWeight = require('./routes/api-weight');
 const apiExerciseRouter = require('./routes/api-exercise');
 
 app.use('/', indexRouter);
@@ -48,20 +49,12 @@ app.use('/api/goal', goalApi);
 app.use('/api/group', groupApi);
 app.use('/api/food', apiFoodRouter);
 app.use('/api/exercise', apiExerciseRouter);
+app.use('/api/weight', apiWeight);
 app.use('/api/auth', require('./routes/api-auth'));
 app.get('/signup', (req, res) => {
   res.render('register');  
 });
-app.get('/dashboard', (req, res) => {
-  if (!req.session.username) return res.redirect('/login');
 
-  res.render('dashboard', {
-    username: req.session.username,
-    email:    req.session.email,
-    bmi:      req.session.bmi,
-    feedback: req.session.bmiFeedback
-  });
-});
 const dashboardRouter = require('./routes/dashboard');
 app.use('/', dashboardRouter);
 
@@ -79,6 +72,10 @@ app.get('/create-goal', (req, res) => {
 app.get('/log-weight', (req, res) => {
   if (!req.session.username) return res.redirect('/login');
   res.render('log-weight');
+});
+app.get('/exercise', (req, res) => {
+  if (!req.session.username) return res.redirect('/login');
+  res.render('exercise');
 });
 
 

@@ -1,15 +1,53 @@
+//- views/dashboard.pug
 extends layout
 
 block content
-  h1 Hello, #{username}!
-  p Email: #{email}
-  hr
-  h2 Your BMI: #{bmi}
-  p #{feedback}
+  .container.mt-5
+    .card.mx-auto.shadow(style="max-width:800px;")
+      .card-body
+        // greeting + email
+        h1.card-title Hello, #{username}!
+        p.text-muted.mb-4 Email: #{email}
+        hr
 
+        // stats row
+        .row.text-center.my-4
+          .col-md-6
+            h5 Your BMI
+            p.display-4.mb-0 #{bmi}
+          .col-md-6
+            h5 Feedback
+            p.lead.mb-0 #{feedback}
+        hr
 
-  ul
-    li View your exercise history
-    li Check your diet records
-    li Manage your goals
-    li Join user groups
+        // weight history
+        h5.mb-3 Weight History (last 5)
+        if weightLogs && weightLogs.length
+          table.table
+            thead
+              tr
+                th Date
+                th Weight (kg)
+            tbody
+              each log in weightLogs
+                tr
+                  td= new Date(log.date).toLocaleDateString()
+                  td= log.weight
+        else
+          p.text-muted.mb-4 You haven’t logged any weight yet.
+        hr
+
+        // next steps
+        ul.list-group.list-group-flush.text-start.mb-4
+          li.list-group-item View your exercise history
+          li.list-group-item Check your diet records
+          li.list-group-item Manage your goals
+          li.list-group-item Join user groups
+
+        // button group
+        .text-center
+          .btn-group.btn-group-lg(role="group")
+            a.btn.btn-outline-primary(href="/exercise") 🏃 Exercise
+            a.btn.btn-outline-success(href="/diet") 🥗 Diet
+            a.btn.btn-outline-warning(href="/goal") 🎯 Goals
+            a.btn.btn-outline-info(href="/group") 👥 Groups

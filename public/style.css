@@ -33,3 +33,96 @@ body {
   margin: auto;
   margin-top: 3rem;
 }
+
+
+.hero {
+  position: relative;
+  height: 100vh;
+  background: url('/images/your-bg.jpg') center/cover no-repeat;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 1;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hero-content .card {
+  max-width: 600px;
+  padding: 2rem;
+  text-align: center;
+  background: rgba(255,255,255,0.75);
+  backdrop-filter: blur(8px);
+  border-radius: 0.75rem;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+  animation: fadeIn 1s ease-out;
+}
+
+.btn-gradient {
+  margin: 0 0.3rem;
+  padding: 0.6rem 1.2rem;
+  color: #fff;
+  font-weight: 500;
+  border: none;
+  border-radius: 0.5rem;
+  background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.btn-gradient:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.dashboard-bg {
+  background: url('/images/dashboard-bg.jpg') center/cover no-repeat;
+  min-height: 100vh;
+}
+
+
+.dashboard-bg::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.3);
+  z-index: 0;
+}
+
+
+.container-fluid.dashboard-bg .card {
+  position: relative;
+  z-index: 1;
+}
+
+.card.shadow {
+  border: none;
+  border-radius: 0.75rem;
+}
+
+
+.card.shadow-sm {
+  border: none;
+  background: rgba(255,255,255,0.75);
+  border-radius: 0.75rem;
+}
+
+.card.shadow {
+  border: none;
+  border-radius: 0.75rem;
+  background: rgba(255,255,255,0.75);
+}
+
+
+
+@media(min-width: 768px) {
+  form#createForm, form#joinForm {
+    align-items: center;
+  }
+}

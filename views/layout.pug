@@ -39,14 +39,12 @@ html
           ul.navbar-nav.ms-auto
             if username
               li.nav-item
-                span.nav-link.text-white Hello #{username}
+                a.nav-link.text-white(href='/dashboard') Hello #{username}
               li.nav-item
                 a.nav-link.text-white(href='/logout') Logout
             else
               li.nav-item
-                a.nav-link.text-white(href='/login') Login
-              li.nav-item
-                a.nav-link.text-white(href='/dashboard') Dashboard
+                a.nav-link.text-white(href='/login') Login or Register
 
     .page-wrapper.mt-5.pt-5
       .container

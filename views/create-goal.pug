@@ -1,33 +1,35 @@
+//- views/goal.pug
 extends layout
 
 block content
   .container.mt-5
-    h2 Set a Fitness Goal
+    .card.mx-auto.shadow(style="max-width:600px;")
+      .card-body
+        h2.card-title.mb-4 Set a Fitness Goal
+        form(action="/api/goal/add" method="POST")
+          .row
+            .col-md-6.mb-3
+              label.form-label(for="goalType") Goal Type
+              select.form-select(name="goalType" id="goalType" required)
+                option(value="weight") Weight Loss
+                option(value="run") Running
+                option(value="cycling") Cycling
+                option(value="fitness") General Fitness
+            .col-md-6.mb-3
+              label.form-label(for="deadline") Deadline
+              input.form-control(type="date" name="deadline" id="deadline" required)
 
-    form(action="/api/goal/add", method="POST")
+          .mb-3
+            label.form-label(for="target") Target
+            input.form-control(type="text" name="target" id="target" placeholder="e.g. 70kg or 5km" required)
 
-      .mb-3
-        label.form-label(for="goalType") Goal Type
-        select.form-select(name="goalType", id="goalType", required)
-          option(value="weight") Weight Loss
-          option(value="run") Running
-          option(value="cycling") Cycling
-          option(value="fitness") General Fitness
+          .row
+            .col-md-6.mb-3
+              label.form-label(for="distance") Distance (km)
+              input.form-control(type="number" name="distance" id="distance" placeholder="Optional")
+            .col-md-6.mb-3
+              label.form-label(for="time") Time (minutes)
+              input.form-control(type="number" name="time" id="time" placeholder="Optional")
 
-      .mb-3
-        label.form-label(for="target") Target
-        input.form-control(type="text", name="target", id="target", placeholder="e.g. 70kg or 5km", required)
-
-      .mb-3
-        label.form-label(for="distance") Distance (km)
-        input.form-control(type="number", name="distance", id="distance", placeholder="Optional")
-
-      .mb-3
-        label.form-label(for="time") Time (minutes)
-        input.form-control(type="number", name="time", id="time", placeholder="Optional")
-
-      .mb-3
-        label.form-label(for="deadline") Deadline
-        input.form-control(type="date", name="deadline", id="deadline", required)
-
-      button.btn.btn-primary(type="submit") Set Goal
+          .d-grid.mt-4
+            button.btn.btn-primary(type="submit") Set Goal

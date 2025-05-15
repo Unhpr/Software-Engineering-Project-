@@ -1,6 +1,12 @@
 extends layout
 
 block content
-  .home-card.text-center
-    h1 Welcome to the Health Tracker
-    p Use the nav bar above to explore the site.
+  .hero
+    .container.hero-content
+      .card
+        h1 Welcome to the Health Tracker
+        p.lead Jump straight to:
+        .btn-group
+          a.btn.btn-gradient(href="/exercise") 🏃 Exercise
+          a.btn.btn-gradient(href="/diet") 🥗 Diet
+          a.btn.btn-gradient(href="/group") 👥 Groups
