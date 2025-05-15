@@ -53,12 +53,15 @@ app.get('/signup', (req, res) => {
   res.render('register');  
 });
 app.get('/dashboard', (req, res) => {
-  if (!req.session.username) {
-    return res.redirect('/login');
-  }
+  if (!req.session.username) return res.redirect('/login');
 
-  res.render('dashboard', { username: req.session.username });
+  res.render('dashboard', {
+    username: req.session.username,
+    bmi: req.session.bmi,
+    feedback: req.session.feedback
+  });
 });
+
 
 app.get('/logout', (req, res) => {
   req.session.destroy(() => {

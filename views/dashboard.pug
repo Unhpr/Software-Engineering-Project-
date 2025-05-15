@@ -4,6 +4,12 @@ block content
   h2 Hello #{username}!
   p Welcome to your AeroFitness Dashboard.
 
+  if bmi
+    .alert.alert-info.mt-3
+      p Your BMI is #{bmi}
+      if feedback
+        p #{feedback}
+
   ul
     li View your exercise history
     li Check your diet records

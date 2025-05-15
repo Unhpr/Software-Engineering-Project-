@@ -43,11 +43,11 @@ router.post('/register', async (req, res) => {
     else if (bmi >= 25) feedback = "You're overweight. Consider setting a weight loss goal.";
 
 
-    res.json({
-      message: 'User registered and logged in successfully',
-      bmi: newUser.bmi,
-      feedback
-    });
+    req.session.bmi = newUser.bmi;
+    req.session.feedback = feedback;
+
+    res.redirect('/dashboard');
+
   } catch (error) {
     console.error('Registration error:', error);
     res.status(500).json({ message: 'Error saving user', error: error.message });
