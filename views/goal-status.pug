@@ -4,22 +4,25 @@ block content
   .container.mt-5
     h2.text-center.mb-4 Goal Status
 
-    each goal in goals
-      .card.mb-3.shadow-sm
-        .card-body
-          h5.card-title Goal: #{goal.goalType}
-          p.card-text
-            | Target: #{goal.target || 'N/A'}
-          if goal.distance
-            p.card-text Distance: #{goal.distance} km
-          if goal.time
-            p.card-text Time: #{goal.time} minutes
-          if goal.deadline
-            p.card-text Deadline: #{goal.deadline.toDateString()}
-          
-          if goal.met
-            p.text-success #{goal.message}
-          else
-            p.text-warning #{goal.message}
+    if goals.length === 0
+      p.text-center.text-muted No goals found.
+    else
+      each goal in goals
+        .card.mb-3.shadow-sm
+          .card-body
+            h5.card-title Goal: #{goal.goalType}
+            p.card-text Target: #{goal.target || 'N/A'}
+            if goal.distance
+              p.card-text Distance: #{goal.distance} km
+            if goal.time
+              p.card-text Time: #{goal.time} minutes
+            if goal.deadline
+              p.card-text Deadline: #{goal.deadline.toDateString()}
+            if goal.met
+              p.text-success #{goal.message}
+            else
+              p.text-warning #{goal.message}
 
-
+            form(action="/goals/delete/" + goal._id method="POST" style="display:inline")
+              input(type="hidden" name="username" value=username)
+              button(type="submit" class="btn btn-danger btn-sm" style="margin-top:10px") Delete
