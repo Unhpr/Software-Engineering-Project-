@@ -8,9 +8,9 @@ const UserGoalSchema = new mongoose.Schema({
     required: true
   },
   goalType:  { type: String, required: true },
-  target:    { type: String },                // keep optional if you like
-  distance:  { type: Number, required: true },// e.g. in km
-  time:      { type: Number, required: true },// e.g. in minutes
+  target:    { type: String },                
+  distance:  { type: Number, required: true },
+  time:      { type: Number, required: true },
   deadline:  { type: Date,   required: true }
 }, { timestamps: true });
 

@@ -20,12 +20,12 @@ router.post('/add', async (req, res) => {
     const user = await User.findOne({ username });
     if (!user) return res.status(404).json({ error: 'User not found' });
     const goal = new Goal({
-      userId:   req.session.userId,               // from your session
-      goalType,                                  // e.g. "run", "swim"
-      target,                                    // optional text target
-      distance: Number(distance),                // e.g. kilometers
-      time:     Number(time),                    // e.g. minutes
-      deadline: new Date(deadline)               // e.g. "2025-06-01"
+      userId:   req.session.userId,             
+      goalType,                            
+      target,                                  
+      distance: Number(distance),                
+      time:     Number(time),                   
+      deadline: new Date(deadline)               
     });
 
     await goal.save();

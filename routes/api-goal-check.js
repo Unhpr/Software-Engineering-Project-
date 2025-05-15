@@ -1,4 +1,3 @@
-// routes/goal-status.js
 const express      = require('express');
 const router       = express.Router();
 const UserGoal     = require('../models/UserGoal');
@@ -9,7 +8,6 @@ router.get('/status', async (req, res) => {
   if (!userId) return res.redirect('/login');
 
   try {
-    // load user (assumes UserProfile has a `weight` and `username` field)
     const user = await UserProfile.findById(userId);
     if (!user) return res.redirect('/login');
 

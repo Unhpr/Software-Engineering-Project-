@@ -1,10 +1,9 @@
-// routes/api-group.js
 const express       = require('express');
-const router        = express.Router();        // ← make sure this is express.Router()
+const router        = express.Router();       
 const Group         = require('../models/Group');
 const { v4: uuidv4 } = require('uuid');
 
-// Create a new group
+
 router.post('/create', async (req, res) => {
   const userId = req.session.userId;
   if (!userId) return res.status(401).json({ error: 'Unauthorized' });
@@ -26,7 +25,6 @@ router.post('/create', async (req, res) => {
   }
 });
 
-// routes/api-group.js
 router.post('/join', async (req, res) => {
   const userId = req.session.userId;
   if (!userId) return res.status(401).json({ error: 'Unauthorized' });
@@ -88,7 +86,7 @@ router.get('/members/:groupId', async (req, res) => {
   }
 });
 
-// Leave a group
+
 router.post('/leave/:groupId', async (req, res) => {
   const userId = req.session.userId;
   if (!userId) return res.status(401).json({ error: 'Unauthorized' });

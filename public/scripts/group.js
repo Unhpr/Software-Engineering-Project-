@@ -1,4 +1,3 @@
-// public/scripts/group.js
 document.addEventListener('DOMContentLoaded', () => {
   let selectedId = null;
   const createForm    = document.getElementById('createForm');
@@ -16,7 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const err = await res.json();
         console.error('Load groups failed:', err);
       } else {
-        groups = await res.json();     // now each group has { _id, name, canDelete }
+        groups = await res.json();   
       }
     } catch (e) {
       console.error('Network error loading groups:', e);

@@ -2,13 +2,13 @@ const express = require('express');
 const router = express.Router();
 const UserGoal = require('../models/UserGoal');
 
-// Delete a specific user goal
+
 router.get('/api/goal-check/status/:username', async (req, res) => {
   const username = req.params.username;
 
   try {
     const goals = await UserGoal.find({ username });
-    console.log("Fetched goals:", goals);  // FIXED: use correct model name
+    console.log("Fetched goals:", goals); 
 
     res.render('goal-status', {
       goals,

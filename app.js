@@ -73,10 +73,6 @@ app.get('/log-weight', (req, res) => {
   if (!req.session.username) return res.redirect('/login');
   res.render('log-weight');
 });
-app.get('/exercise', (req, res) => {
-  if (!req.session.username) return res.redirect('/login');
-  res.render('exercise');
-});
 
 
 
