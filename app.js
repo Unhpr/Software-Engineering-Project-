@@ -57,10 +57,14 @@ app.get('/dashboard', (req, res) => {
 
   res.render('dashboard', {
     username: req.session.username,
-    bmi: req.session.bmi,
-    feedback: req.session.feedback
+    email:    req.session.email,
+    bmi:      req.session.bmi,
+    feedback: req.session.bmiFeedback
   });
 });
+const dashboardRouter = require('./routes/dashboard');
+app.use('/', dashboardRouter);
+
 
 
 app.get('/logout', (req, res) => {

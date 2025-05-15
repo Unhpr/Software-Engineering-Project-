@@ -14,13 +14,14 @@ block content
     h4.mb-3 Join Group
     form#joinForm.mb-4
       .mb-3
-        label.form-label(for="inviteCode") Code
-        input#inviteCode.form-control(type="text" placeholder="Enter code")
+        label.form-label(for="groupIdentifier") Group name or code
+        input#groupIdentifier.form-control(type="text" placeholder="Enter name or code")
       button.btn.btn-success(type="submit") Join
 
     hr
     h5.text-muted My Groups
-    ul#myGroups.list-group.mb-3
+    ul#myGroups.list-group.mb-3(style="max-height:200px; overflow-y:auto;")
+
 
     button#leaveGroupBtn.btn.btn-warning(type="button" disabled) Leave
     button#deleteGroupBtn.btn.btn-danger.ml-2(type="button" disabled) Delete

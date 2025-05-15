@@ -16,35 +16,37 @@ document.addEventListener('DOMContentLoaded', () => {
         const err = await res.json();
         console.error('Load groups failed:', err);
       } else {
-        groups = await res.json();
+        groups = await res.json();     // now each group has { _id, name, canDelete }
       }
     } catch (e) {
       console.error('Network error loading groups:', e);
     }
   
-    // now safe to do:
-    myGroupsList.innerHTML = '';
-
+    // reset UI
     myGroupsList.innerHTML = '';
     memberList.innerHTML   = '';
     selectedId             = null;
     leaveBtn.disabled      = true;
     deleteBtn.disabled     = true;
+  
+    // repopulate
     groups.forEach(g => {
       const li = document.createElement('li');
-      li.textContent = g.name;
-      li.dataset.id = g._id;
-      li.className = 'list-group-item list-group-item-action';
-      li.onclick = () => selectGroup(li);
+      li.textContent           = g.name;
+      li.dataset.id            = g._id;
+      li.dataset.canDelete     = g.canDelete; 
+      li.className             = 'list-group-item list-group-item-action';
+      li.onclick               = () => selectGroup(li);
       myGroupsList.appendChild(li);
     });
   }
   function selectGroup(li) {
-    document.querySelectorAll('#myGroups li').forEach(n => n.classList.remove('active'));
+    document.querySelectorAll('#myGroups li')
+      .forEach(n => n.classList.remove('active'));
     li.classList.add('active');
-    selectedId = li.dataset.id;
-    leaveBtn.disabled = false;
-    deleteBtn.disabled = false;
+    selectedId     = li.dataset.id;
+    leaveBtn.disabled  = false;
+    deleteBtn.disabled = li.dataset.canDelete !== 'true';
     loadMembers();
   }
 
@@ -74,38 +76,33 @@ document.addEventListener('DOMContentLoaded', () => {
     loadGroups();
   });
 
-joinForm.addEventListener('submit', async e => {
-  e.preventDefault();
-  const code = document.getElementById('inviteCode').value.trim();
-  if (!code) return alert('Enter the invite code');
-
-  try {
-    const res = await fetch('/api/group/join', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ inviteCode: code })
-    });
-    const data = await res.json();
-
-    if (!res.ok) {
-      // differentiate 404 vs 400 vs others
-      if (res.status === 404) {
-        return alert('No group matches that code.');
+  joinForm.addEventListener('submit', async e => {
+    e.preventDefault();
+    const identifier = document.getElementById('groupIdentifier').value.trim();
+    if (!identifier) return alert('Enter a group name or code');
+  
+    try {
+      const res = await fetch('/api/group/join', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ identifier })
+      });
+      const data = await res.json();
+  
+      if (!res.ok) {
+        if (res.status === 404)      return alert('No group matches that name or code.');
+        if (res.status === 400)      return alert(data.error);
+        return alert('Error joining group: ' + data.error);
       }
-      if (res.status === 400) {
-        return alert(data.error);  // e.g. "You are already in this group"
-      }
-      return alert('Error joining group: ' + data.error);
+  
+      joinForm.reset();
+      loadGroups();
+    } catch (err) {
+      console.error('Network error joining group:', err);
+      alert('Network error — please try again.');
     }
-
-    // success
-    joinForm.reset();
-    loadGroups();
-  } catch (err) {
-    console.error('Network error joining group:', err);
-    alert('Network error — please try again.');
-  }
-});
+  });
+  
 
 
 

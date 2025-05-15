@@ -1,8 +1,12 @@
 extends layout
 
 block content
-  h2 Hello #{username}!
-  p Welcome to your AeroFitness Dashboard.
+  h1 Hello, #{username}!
+  p Email: #{email}
+  hr
+  h2 Your BMI: #{bmi}
+  p #{feedback}
+
 
   ul
     li View your exercise history

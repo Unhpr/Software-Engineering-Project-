@@ -26,18 +26,23 @@ router.post('/create', async (req, res) => {
   }
 });
 
+// routes/api-group.js
 router.post('/join', async (req, res) => {
   const userId = req.session.userId;
   if (!userId) return res.status(401).json({ error: 'Unauthorized' });
 
-  const { inviteCode } = req.body;
+  const { identifier } = req.body;  // group name or invite code
   try {
-    const group = await Group.findOne({ inviteCode });
+    const group = await Group.findOne({
+      $or: [
+        { inviteCode: identifier },
+        { name: identifier }
+      ]
+    });
     if (!group) return res.status(404).json({ error: 'Group not found' });
 
-    if (group.members.includes(userId)) {
+    if (group.members.includes(userId))
       return res.status(400).json({ error: 'You are already in this group' });
-    }
 
     group.members.push(userId);
     await group.save();
@@ -48,21 +53,22 @@ router.post('/join', async (req, res) => {
   }
 });
 
-// List all groups current user belongs to
+
 router.get('/mine', async (req, res) => {
-  const userId = req.session.userId;
+  const userId = req.session.userId?.toString();
   if (!userId) return res.status(401).json({ error: 'Unauthorized' });
 
-  try {
-    const groups = await Group
-      .find({ members: userId })
-      .select('_id name');      // only return those two fields
-    res.json(groups);
-  } catch (err) {
-    console.error('Fetch my-groups error:', err);
-    res.status(500).json({ error: err.message });
-  }
+  const groups = await Group
+    .find({ members: userId })
+    .select('_id name createdBy');
+
+  res.json(groups.map(g => ({
+    _id:      g._id,
+    name:     g.name,
+    canDelete: g.createdBy.toString() === userId
+  })));
 });
+
 
 // Get members of a specific group
 router.get('/members/:groupId', async (req, res) => {
