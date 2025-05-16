@@ -5,11 +5,11 @@ const express = require('express');
 const path = require('path');
 const app = express();
 const session = require('express-session');
-require('dotenv').config();
+
 
 
 app.use(session({
-  secret: process.env.SESSION_SECRET, //ebd49dbc4b9d08e3989c17e413d3d3ce7bc432191ef6bb1d4a81c3f1eaf5f643
+  secret: "S", //ebd49dbc4b9d08e3989c17e413d3d3ce7bc432191ef6bb1d4a81c3f1eaf5f643
   resave: false,
   saveUninitialized: true
 }));
